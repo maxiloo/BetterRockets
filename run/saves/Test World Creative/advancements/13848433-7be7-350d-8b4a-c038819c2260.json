@@ -1,0 +1,24 @@
+{
+  "minecraft:recipes/decorations/crafting_table": {
+    "criteria": {
+      "unlock_right_away": "2024-08-19 00:28:15 +0200"
+    },
+    "done": true
+  },
+  "minecraft:end/elytra": {
+    "criteria": {
+      "elytra": "2024-08-19 00:28:34 +0200"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:frozen_ocean": "2024-08-19 00:29:31 +0200",
+      "minecraft:frozen_river": "2024-08-19 00:29:37 +0200",
+      "minecraft:snowy_plains": "2024-08-19 00:28:16 +0200",
+      "minecraft:snowy_beach": "2024-08-19 00:29:33 +0200"
+    },
+    "done": false
+  },
+  "DataVersion": 3953
+}
