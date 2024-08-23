@@ -7,14 +7,14 @@ import net.minecraft.inventory.StackReference;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ClickType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 
 public class RechargeableFireworkItem extends Item {
@@ -100,4 +100,11 @@ public class RechargeableFireworkItem extends Item {
         return ITEM_BAR_COLOR;
     }
 
+    @Override
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+
+        String text = Text.translatable("itemTooltip.better-rockets.rechargeable_firework").getString();
+        tooltip.add(Text.literal(getLoadedFireworks(stack) + "/" + MAX_LOAD + " " + text).formatted((Formatting.GOLD)));
+
+    }
 }
