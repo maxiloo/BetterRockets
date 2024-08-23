@@ -1,6 +1,7 @@
 package max.betterrockets.item.custom;
 
 import max.betterrockets.ModComponents;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
 import net.minecraft.inventory.StackReference;
@@ -9,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
@@ -30,10 +33,9 @@ public class RechargeableFireworkItem extends Item {
     public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
         if (clickType == ClickType.RIGHT && otherStack.isOf(Items.FIREWORK_ROCKET)) {
             if (!isFull(stack)) {
-                int itemBarStep = getItemBarStep(stack);
-                player.sendMessage(Text.of("itemBarStep: " + itemBarStep), false);
                 int fireworks_other_stack = otherStack.getCount();
-                int fireworks_loaded = fireworks_other_stack + getLoadedFireworks(stack);
+                int fireworks_loaded_old = getLoadedFireworks(stack);
+                int fireworks_loaded = fireworks_other_stack + fireworks_loaded_old;
                 if (fireworks_loaded > MAX_LOAD) {
                     fireworks_other_stack = fireworks_loaded - MAX_LOAD;
                     fireworks_loaded = MAX_LOAD;
@@ -42,6 +44,9 @@ public class RechargeableFireworkItem extends Item {
                 }
                 setLoadedFireworks(stack, fireworks_loaded);
                 otherStack.setCount(fireworks_other_stack);
+                if (fireworks_loaded > fireworks_loaded_old) {
+                    playInsertSound(player);
+                }
                 return true;
             }
         }
@@ -53,7 +58,11 @@ public class RechargeableFireworkItem extends Item {
 
         ItemStack itemStack = user.getStackInHand(hand);
 
-        if (!world.isClient && user.isFallFlying() && !isEmpty(itemStack)) {
+        if (!world.isClient && user.isFallFlying()) {
+            if (isEmpty(itemStack)) {
+                playEmptySound(world, user);
+                return new TypedActionResult<>(ActionResult.SUCCESS, itemStack);
+            }
             user.setCurrentHand(hand);
             FireworkRocketEntity fireworkRocketEntity = new FireworkRocketEntity(world, itemStack, user);
             world.spawnEntity(fireworkRocketEntity);
@@ -108,5 +117,13 @@ public class RechargeableFireworkItem extends Item {
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         tooltip.add(Text.translatable("itemTooltip.better-rockets.rechargeable_firework", getLoadedFireworks(stack), MAX_LOAD).formatted(Formatting.GOLD));
+    }
+
+    private void playInsertSound(Entity entity) {
+        entity.playSound(SoundEvents.ITEM_BUNDLE_INSERT, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
+    }
+
+    private void playEmptySound(World world, PlayerEntity user) {
+        world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_DISPENSER_FAIL, SoundCategory.PLAYERS, 1.0F, 1.0F);
     }
 }
