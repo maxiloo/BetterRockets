@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-
 public class RechargeableFireworkItem extends Item {
 
     private static final int MAX_LOAD = 512;
