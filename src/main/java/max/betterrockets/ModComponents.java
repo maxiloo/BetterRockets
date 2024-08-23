@@ -14,7 +14,7 @@ public class ModComponents {
             ComponentType.<Integer>builder().codec(Codec.INT).build()
     );
 
-    protected static void initialize() {
+    protected static void registerModComponents() {
         BetterRockets.LOGGER.info("Registering ModComponents for " + BetterRockets.MOD_ID);
     }
 }
