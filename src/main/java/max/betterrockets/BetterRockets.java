@@ -13,5 +13,7 @@ public class BetterRockets implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ModItems.registerModItems();
+		//ModBlocks.registerModBlocks();
+		ModComponents.initialize();
 	}
 }
