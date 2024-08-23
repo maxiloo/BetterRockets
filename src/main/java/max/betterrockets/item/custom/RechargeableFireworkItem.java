@@ -23,7 +23,7 @@ public class RechargeableFireworkItem extends Item {
     private static final int ITEM_BAR_COLOR = MathHelper.packRgb(0.4F, 0.4F, 1.0F);
 
     public RechargeableFireworkItem(Item.Settings settings) {
-        super(settings);
+        super(settings.maxCount(1));
     }
 
     @Override
