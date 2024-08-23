@@ -19,7 +19,7 @@ import java.util.List;
 
 public class RechargeableFireworkItem extends Item {
 
-    private static final int MAX_LOAD = 64;
+    private static final int MAX_LOAD = 512;
     private static final int ITEM_BAR_COLOR = MathHelper.packRgb(0.4F, 0.4F, 1.0F);
 
     public RechargeableFireworkItem(Item.Settings settings) {
@@ -52,6 +52,7 @@ public class RechargeableFireworkItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 
         ItemStack itemStack = user.getStackInHand(hand);
+
         if (!world.isClient && user.isFallFlying() && !isEmpty(itemStack)) {
             user.setCurrentHand(hand);
             FireworkRocketEntity fireworkRocketEntity = new FireworkRocketEntity(world, itemStack, user);
@@ -59,7 +60,11 @@ public class RechargeableFireworkItem extends Item {
             int loaded_fireworks = getLoadedFireworks(itemStack);
             loaded_fireworks--;
             setLoadedFireworks(itemStack, loaded_fireworks);
-            user.sendMessage(Text.of("§9" + loaded_fireworks + " Fireworks remain"), true);
+            if (loaded_fireworks == 64 || loaded_fireworks == 8) {
+                user.sendMessage(Text.translatable("itemLoadWarningLastX.better-rockets.rechargeable_firework", loaded_fireworks).formatted(Formatting.GOLD), true);
+            } else if (loaded_fireworks == 1) {
+                user.sendMessage(Text.translatable("itemLoadWarningLastOne.better-rockets.rechargeable_firework", loaded_fireworks).formatted(Formatting.RED, Formatting.BOLD), true);
+            }
         }
         return new TypedActionResult<>(ActionResult.SUCCESS, itemStack);
     }
@@ -102,9 +107,6 @@ public class RechargeableFireworkItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-
-        String text = Text.translatable("itemTooltip.better-rockets.rechargeable_firework").getString();
-        tooltip.add(Text.literal(getLoadedFireworks(stack) + "/" + MAX_LOAD + " " + text).formatted((Formatting.GOLD)));
-
+        tooltip.add(Text.translatable("itemTooltip.better-rockets.rechargeable_firework", getLoadedFireworks(stack), MAX_LOAD).formatted(Formatting.GOLD));
     }
 }
