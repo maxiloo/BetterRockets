@@ -87,7 +87,12 @@ public class RechargeableFireworkItem extends Item {
     }
 
     private int getLoadedFireworks(ItemStack itemStack) {
-        return itemStack.getOrDefault(ModComponents.ROCKETS_LOADED, MAX_LOAD);
+        int loadedFireworks = itemStack.getOrDefault(ModComponents.ROCKETS_LOADED, 0);
+        if (loadedFireworks < 0) {
+            loadedFireworks = 0;
+            setLoadedFireworks(itemStack, loadedFireworks);
+        }
+        return loadedFireworks;
     }
 
     private void setLoadedFireworks(ItemStack itemStack, int number) {
@@ -101,7 +106,9 @@ public class RechargeableFireworkItem extends Item {
 
     @Override
     public boolean isItemBarVisible(ItemStack stack) {
-        return getLoadedFireworks(stack) < MAX_LOAD;
+        int loadedFireworks = stack.getOrDefault(ModComponents.ROCKETS_LOADED, -1);
+
+        return (loadedFireworks >= 0 && loadedFireworks < MAX_LOAD);
     }
 
     @Override
@@ -116,6 +123,11 @@ public class RechargeableFireworkItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+
+        int loadedFireworks = stack.getOrDefault(ModComponents.ROCKETS_LOADED, -1);
+        if (loadedFireworks < 0) {
+            return;
+        }
         tooltip.add(Text.translatable("itemTooltip.better-rockets.rechargeable_firework", getLoadedFireworks(stack), MAX_LOAD).formatted(Formatting.GOLD));
     }
 
