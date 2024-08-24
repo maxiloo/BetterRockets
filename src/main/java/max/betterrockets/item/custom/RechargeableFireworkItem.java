@@ -1,6 +1,8 @@
 package max.betterrockets.item.custom;
 
 import max.betterrockets.ModComponents;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.FireworksComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
@@ -17,6 +19,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RechargeableFireworkItem extends Item {
@@ -63,8 +66,11 @@ public class RechargeableFireworkItem extends Item {
                 return new TypedActionResult<>(ActionResult.SUCCESS, itemStack);
             }
             user.setCurrentHand(hand);
+
             FireworkRocketEntity fireworkRocketEntity = new FireworkRocketEntity(world, itemStack, user);
+            itemStack.set(DataComponentTypes.FIREWORKS, new FireworksComponent(1, new ArrayList<>()));
             world.spawnEntity(fireworkRocketEntity);
+
             int loaded_fireworks = getLoadedFireworks(itemStack);
             loaded_fireworks--;
             setLoadedFireworks(itemStack, loaded_fireworks);
