@@ -16,6 +16,8 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+
+	mavenCentral()
 }
 
 loom {
@@ -38,7 +40,11 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
+
+	// Fabric Loader JUnit
+	testImplementation "net.fabricmc:fabric-loader-junit:${project.loader_version}"
+
+	testImplementation "org.mockito:mockito-core:3.+"
 }
 
 processResources {
@@ -84,5 +90,17 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+	}
+}
+
+// configure Gradle to use Fabric Loader JUnit for testing
+test {
+	useJUnitPlatform()
+}
+
+sourceSets {
+	test {
+		compileClasspath += client.compileClasspath
+		runtimeClasspath += client.runtimeClasspath
 	}
 }

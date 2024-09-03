@@ -63,13 +63,11 @@ public class RechargeableFireworkItem extends Item {
         if (!world.isClient && user.isFallFlying()) {
             if (isEmpty(itemStack)) {
                 playEmptySound(world, user);
-                return new TypedActionResult<>(ActionResult.SUCCESS, itemStack);
+                return new TypedActionResult<>(ActionResult.FAIL, itemStack);
             }
             user.setCurrentHand(hand);
 
-            FireworkRocketEntity fireworkRocketEntity = new FireworkRocketEntity(world, itemStack, user);
-            itemStack.set(DataComponentTypes.FIREWORKS, new FireworksComponent(1, new ArrayList<>()));
-            world.spawnEntity(fireworkRocketEntity);
+            spawnFireworkEntity(world, user, itemStack); // separate method for easier testing
 
             int loaded_fireworks = getLoadedFireworks(itemStack);
             loaded_fireworks--;
@@ -79,8 +77,18 @@ public class RechargeableFireworkItem extends Item {
             } else if (loaded_fireworks == 1) {
                 user.sendMessage(Text.translatable("itemLoadWarningLastOne.better-rockets.rechargeable_firework", loaded_fireworks).formatted(Formatting.RED, Formatting.BOLD), true);
             }
+            return new TypedActionResult<>(ActionResult.SUCCESS, itemStack);
+
+        } else {
+            return new TypedActionResult<>(ActionResult.FAIL, itemStack);
+
         }
-        return new TypedActionResult<>(ActionResult.SUCCESS, itemStack);
+    }
+
+    public void spawnFireworkEntity(World world, PlayerEntity user, ItemStack itemStack) {
+        FireworkRocketEntity fireworkRocketEntity = new FireworkRocketEntity(world, itemStack, user);
+        itemStack.set(DataComponentTypes.FIREWORKS, new FireworksComponent(1, new ArrayList<>()));
+        world.spawnEntity(fireworkRocketEntity);
     }
 
     private boolean isFull(ItemStack itemStack) {
@@ -91,7 +99,7 @@ public class RechargeableFireworkItem extends Item {
         return getLoadedFireworks(itemStack) <= 0;
     }
 
-    private int getLoadedFireworks(ItemStack itemStack) {
+    public int getLoadedFireworks(ItemStack itemStack) {
         int loadedFireworks = itemStack.getOrDefault(ModComponents.ROCKETS_LOADED, 0);
         if (loadedFireworks < 0) {
             loadedFireworks = 0;
@@ -100,7 +108,7 @@ public class RechargeableFireworkItem extends Item {
         return loadedFireworks;
     }
 
-    private void setLoadedFireworks(ItemStack itemStack, int number) {
+    public void setLoadedFireworks(ItemStack itemStack, int number) {
         if (number > MAX_LOAD) {
             number = MAX_LOAD;
         } else if (number < 0) {
@@ -136,11 +144,11 @@ public class RechargeableFireworkItem extends Item {
         tooltip.add(Text.translatable("itemTooltip.better-rockets.rechargeable_firework", getLoadedFireworks(stack), MAX_LOAD).formatted(Formatting.GOLD));
     }
 
-    private void playInsertSound(Entity entity) {
+    public void playInsertSound(Entity entity) {
         entity.playSound(SoundEvents.ITEM_BUNDLE_INSERT, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
     }
 
-    private void playEmptySound(World world, PlayerEntity user) {
+    public void playEmptySound(World world, PlayerEntity user) {
         world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_DISPENSER_FAIL, SoundCategory.PLAYERS, 1.0F, 1.0F);
     }
 }
