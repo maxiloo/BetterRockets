@@ -22,5 +22,6 @@
     "result": {
         "id": "better-rockets:rechargeable_firework"
     },
-    "group": "equipment"
+    "group": "equipment",
+    "show_notification": true
 }

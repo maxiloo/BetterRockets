@@ -1,0 +1,8 @@
+{
+  "item.better-rockets.rechargeable_firework": "Saco de cohetes",
+  "itemLoadWarningLastX.better-rockets.rechargeable_firework": "Solo quedan %d cohetes",
+  "itemLoadWarningLastOne.better-rockets.rechargeable_firework": "Solo queda un cohete",
+  "itemTooltip.better-rockets.rechargeable_firework": "%d/%d cohetes cargados",
+  "itemTooltip.better-rockets.rechargeable_firework_type": "Duración del vuelo: %d",
+  "itemTooltip.better-rockets.rechargeable_firework_empty": "No hay ningún cohete cargado"
+}

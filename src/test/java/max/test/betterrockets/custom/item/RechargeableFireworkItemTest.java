@@ -4,6 +4,8 @@ import max.betterrockets.ModComponents;
 import max.betterrockets.item.custom.RechargeableFireworkItem;
 import net.minecraft.Bootstrap;
 import net.minecraft.SharedConstants;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.FireworksComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,6 +19,8 @@ import net.minecraft.world.World;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -61,6 +65,38 @@ public class RechargeableFireworkItemTest {
 
         // Verify
         verify(rechargeableFireworkItem).playInsertSound(any(PlayerEntity.class));
+    }
+
+    @Test
+    @DisplayName("Test successful rocket bundle reload with flight duration 3")
+    void testOnClicked_fireworkType() {
+        // Given
+        fireworkStack.set(DataComponentTypes.FIREWORKS, new FireworksComponent(3, new ArrayList<>()));
+
+        // When
+        boolean result = rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.RIGHT, player, null);
+
+        // Then
+        assertTrue(result, "onClicked should return true when clicking on the stack with a the correct firework type");
+        assertEquals(3, rechargeableFireworkItem.getFireworkType(rechargeableFireworkStack), "the firework type should be 3");
+        assertEquals(64, rechargeableFireworkStack.getOrDefault(ModComponents.ROCKETS_LOADED, 0), "the rocket bundle should increase to 64");
+    }
+
+    @Test
+    @DisplayName("Test rocket bundle reload fail due to wrong firework type")
+    void testOnClicked_falseFireworkType() {
+        // Given
+        fireworkStack.set(DataComponentTypes.FIREWORKS, new FireworksComponent(1, new ArrayList<>()));
+        rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.RIGHT, player, null);
+        fireworkStack.set(DataComponentTypes.FIREWORKS, new FireworksComponent(3, new ArrayList<>())); // Different flight duration
+
+        // When
+        boolean result = rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.RIGHT, player, null);
+
+        // Then
+        assertFalse(result, "onClicked should return false when clicking on the stack with a different rocket duration");
+        assertEquals(1, rechargeableFireworkItem.getFireworkType(rechargeableFireworkStack), "the firework type should still be 1");
+        assertEquals(64, rechargeableFireworkStack.getOrDefault(ModComponents.ROCKETS_LOADED, 0), "the rocket bundle should still be 64");
     }
 
     @Test
