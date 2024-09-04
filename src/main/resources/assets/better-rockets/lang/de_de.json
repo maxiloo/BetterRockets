@@ -1,0 +1,8 @@
+{
+  "item.better-rockets.rechargeable_firework": "Raketenbündel",
+  "itemLoadWarningLastX.better-rockets.rechargeable_firework": "Nur noch %d Feuerwerksraketen übrig",
+  "itemLoadWarningLastOne.better-rockets.rechargeable_firework": "Nur noch eine Feuerwerksrakete übrig",
+  "itemTooltip.better-rockets.rechargeable_firework": "%d/%d Feuerwerksraketen geladen",
+  "itemTooltip.better-rockets.rechargeable_firework_type": "Flugdauer: %d",
+  "itemTooltip.better-rockets.rechargeable_firework_empty": "Keine Feuerwerksrakete geladen"
+}
