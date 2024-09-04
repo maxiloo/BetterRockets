@@ -14,6 +14,12 @@ public class ModComponents {
             ComponentType.<Integer>builder().codec(Codec.INT).build()
     );
 
+    public static final ComponentType<Integer> ROCKET_TYPE = Registry.register(
+            Registries.DATA_COMPONENT_TYPE,
+            Identifier.of(BetterRockets.MOD_ID, "rocket_type"),
+            ComponentType.<Integer>builder().codec(Codec.INT).build()
+    );
+
     protected static void registerModComponents() {
         BetterRockets.LOGGER.info("Registering ModComponents for " + BetterRockets.MOD_ID);
     }
