@@ -6,22 +6,14 @@
         "iSi"
     ],
     "key": {
-        "#": {
-            "item": "minecraft:gunpowder"
-        },
-        "I": {
-            "item": "minecraft:iron_block"
-        },
-        "i": {
-            "item": "minecraft:iron_ingot"
-        },
-        "S": {
-            "item": "minecraft:shulker_shell"
-        }
+        "#": "minecraft:gunpowder",
+        "I": "minecraft:iron_block",
+        "i": "minecraft:iron_ingot",
+        "S": "minecraft:shulker_shell"
     },
     "result": {
-        "id": "better-rockets:rechargeable_firework"
-    },
+        "id": "better-rockets:rechargeable_firework",
+        "count": 1    },
     "group": "equipment",
     "show_notification": true
 }
