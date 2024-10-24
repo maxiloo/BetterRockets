@@ -16,7 +16,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -25,10 +24,10 @@ import java.util.List;
 public class RechargeableFireworkItem extends Item {
 
     private static final int MAX_LOAD = 512;
-    private static final int ITEM_BAR_COLOR = MathHelper.packRgb(0.4F, 0.4F, 1.0F);
+    private static final int ITEM_BAR_COLOR = packRGB(0.4F, 0.4F, 1.0F);
 
     public RechargeableFireworkItem(Item.Settings settings) {
-        super(settings.maxCount(1));
+        super(settings);
     }
 
     @Override
@@ -63,14 +62,14 @@ public class RechargeableFireworkItem extends Item {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
 
         ItemStack itemStack = user.getStackInHand(hand);
 
-        if (!world.isClient && user.isFallFlying()) {
+        if (!world.isClient && user.isGliding()) {
             if (isEmpty(itemStack)) {
                 playEmptySound(world, user);
-                return new TypedActionResult<>(ActionResult.FAIL, itemStack);
+                return ActionResult.FAIL;
             }
 
             user.setCurrentHand(hand);
@@ -87,10 +86,10 @@ public class RechargeableFireworkItem extends Item {
                 user.sendMessage(Text.translatable("itemLoadWarningLastOne.better-rockets.rechargeable_firework", loaded_fireworks).formatted(Formatting.RED, Formatting.BOLD), true);
             }
 
-            return new TypedActionResult<>(ActionResult.SUCCESS, itemStack);
+            return ActionResult.SUCCESS;
 
         } else {
-            return new TypedActionResult<>(ActionResult.FAIL, itemStack);
+            return ActionResult.FAIL;
 
         }
     }
@@ -171,5 +170,12 @@ public class RechargeableFireworkItem extends Item {
 
     public void playEmptySound(World world, PlayerEntity user) {
         world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_DISPENSER_FAIL, SoundCategory.PLAYERS, 1.0F, 1.0F);
+    }
+
+    private static int packRGB(float red, float green, float blue) {
+        int r = (int) (red * 255.0F);
+        int g = (int) (green * 255.0F);
+        int b = (int) (blue * 255.0F);
+        return (r << 16) | (g << 8) | b;
     }
 }

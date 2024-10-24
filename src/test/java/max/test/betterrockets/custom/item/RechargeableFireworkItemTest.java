@@ -1,20 +1,19 @@
 package max.test.betterrockets.custom.item;
 
 import max.betterrockets.ModComponents;
+import max.betterrockets.ModItems;
 import max.betterrockets.item.custom.RechargeableFireworkItem;
 import net.minecraft.Bootstrap;
 import net.minecraft.SharedConstants;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.FireworksComponent;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ClickType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,12 +32,13 @@ public class RechargeableFireworkItemTest {
     private PlayerEntity player;
     private Slot slot;
     private World world;
+
     @BeforeEach
     void setUp() {
         SharedConstants.createGameVersion();
         Bootstrap.initialize();
 
-        rechargeableFireworkItem = spy(new RechargeableFireworkItem(new Item.Settings()));
+        rechargeableFireworkItem = (RechargeableFireworkItem) spy(ModItems.RECHARGEABLE_FIREWORK);
         fireworkStack = new ItemStack(Items.FIREWORK_ROCKET, 64);
         rechargeableFireworkStack = new ItemStack(rechargeableFireworkItem);
         player = mock(PlayerEntity.class);
@@ -209,14 +209,14 @@ public class RechargeableFireworkItemTest {
     void testUse_successful() {
         // Mock behavior
         when(player.getStackInHand(Hand.MAIN_HAND)).thenReturn(rechargeableFireworkStack);
-        when(player.isFallFlying()).thenReturn(true);
+        when(player.isGliding()).thenReturn(true);
 
         // When
         rechargeableFireworkItem.setLoadedFireworks(rechargeableFireworkStack, 11);
-        TypedActionResult<ItemStack> actionResult = rechargeableFireworkStack.use(world, player, Hand.MAIN_HAND);
+        ActionResult actionResult = rechargeableFireworkStack.use(world, player, Hand.MAIN_HAND);
 
         // Then
-        assertEquals(ActionResult.SUCCESS, actionResult.getResult(), "successful use of rocket bundle should return successful ActionResult");
+        assertEquals("Success[swingSource=CLIENT, itemContext=ItemContext[wasItemInteraction=true, heldItemTransformedTo=1 [unregistered]]]", actionResult.toString(), "successful use of rocket bundle should return successful ActionResult");
         assertEquals(10, rechargeableFireworkItem.getLoadedFireworks(rechargeableFireworkStack), "consumption should reduce number of loaded fireworks");
 
         // Verify
@@ -229,14 +229,14 @@ public class RechargeableFireworkItemTest {
     void testUse_empty() {
         // Mock behavior
         when(player.getStackInHand(Hand.MAIN_HAND)).thenReturn(rechargeableFireworkStack);
-        when(player.isFallFlying()).thenReturn(true);
+        when(player.isGliding()).thenReturn(true);
 
         // When
         rechargeableFireworkItem.setLoadedFireworks(rechargeableFireworkStack, 0);
-        TypedActionResult<ItemStack> actionResult = rechargeableFireworkStack.use(world, player, Hand.MAIN_HAND);
+        ActionResult  actionResult = rechargeableFireworkStack.use(world, player, Hand.MAIN_HAND);
 
         // Then
-        assertEquals(ActionResult.FAIL, actionResult.getResult(), "unsuccessful use of rocket bundle should return fail ActionResult");
+        assertEquals(ActionResult.FAIL, actionResult, "unsuccessful use of rocket bundle should return fail ActionResult");
         assertEquals(0, rechargeableFireworkItem.getLoadedFireworks(rechargeableFireworkStack), "consumption should not reduce number of loaded fireworks");
 
         // Verify
@@ -249,14 +249,14 @@ public class RechargeableFireworkItemTest {
     void testUse_notFlying() {
         // Mock behavior
         when(player.getStackInHand(Hand.MAIN_HAND)).thenReturn(rechargeableFireworkStack);
-        when(player.isFallFlying()).thenReturn(false);
+        when(player.isGliding()).thenReturn(false);
 
         // When
         rechargeableFireworkItem.setLoadedFireworks(rechargeableFireworkStack, 20);
-        TypedActionResult<ItemStack> actionResult = rechargeableFireworkStack.use(world, player, Hand.MAIN_HAND);
+        ActionResult actionResult = rechargeableFireworkStack.use(world, player, Hand.MAIN_HAND);
 
         // Then
-        assertEquals(ActionResult.FAIL, actionResult.getResult(), "unsuccessful use of rocket bundle should return fail ActionResult");
+        assertEquals(ActionResult.FAIL, actionResult, "unsuccessful use of rocket bundle should return fail ActionResult");
         assertEquals(20, rechargeableFireworkItem.getLoadedFireworks(rechargeableFireworkStack), "consumption should not reduce number of loaded fireworks");
 
         // Verify
