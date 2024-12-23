@@ -11,12 +11,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.math.Fraction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +27,9 @@ import java.util.List;
 public class RechargeableFireworkItem extends Item {
 
     private static final int MAX_LOAD = 512;
-    private static final int ITEM_BAR_COLOR = packRGB(0.4F, 0.4F, 1.0F);
+    private static final int ALMOST_EMPTY = 64;
+    private static final int ITEM_BAR_COLOR = ColorHelper.fromFloats(1.0F, 0.44F, 0.53F, 1.0F);
+    private static final int ALMOST_EMPTY_BAR_COLOR = ColorHelper.fromFloats(1.0F, 1.0F, 0.33F, 0.33F);
 
     public RechargeableFireworkItem(Item.Settings settings) {
         super(settings);
@@ -32,7 +37,7 @@ public class RechargeableFireworkItem extends Item {
 
     @Override
     public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
-        if (clickType == ClickType.RIGHT && otherStack.isOf(Items.FIREWORK_ROCKET) && !isFull(stack)) {
+        if (clickType == ClickType.LEFT && otherStack.isOf(Items.FIREWORK_ROCKET) && !isFull(stack)) {
             int fireworks_other_stack = otherStack.getCount();
             int fireworks_loaded_old = getLoadedFireworks(stack);
 
@@ -57,6 +62,20 @@ public class RechargeableFireworkItem extends Item {
                 playInsertSound(player);
             }
             return true;
+        } else if (clickType == ClickType.RIGHT && !isEmpty(stack) && otherStack.isEmpty()) {
+            if (slot.canTakePartial(player)) {
+                int loadedFireworks = getLoadedFireworks(stack);
+                int firework_return_size = Math.min(loadedFireworks, 64);
+                int firework_left = loadedFireworks - firework_return_size;
+                ItemStack fireworkStack = new ItemStack(Items.FIREWORK_ROCKET, firework_return_size);
+                fireworkStack.set(DataComponentTypes.FIREWORKS, new FireworksComponent(getFireworkType(stack), new ArrayList<>()));
+                cursorStackReference.set(fireworkStack);
+                setLoadedFireworks(stack, firework_left);
+                playRemoveOneSound(player);
+                return true;
+            }
+        } else if (clickType == ClickType.RIGHT) {
+            return true;
         }
         return false;
     }
@@ -79,12 +98,6 @@ public class RechargeableFireworkItem extends Item {
             int loaded_fireworks = getLoadedFireworks(itemStack);
             loaded_fireworks--;
             setLoadedFireworks(itemStack, loaded_fireworks);
-
-            if (loaded_fireworks == 64 || loaded_fireworks == 8) {
-                user.sendMessage(Text.translatable("itemLoadWarningLastX.better-rockets.rechargeable_firework", loaded_fireworks).formatted(Formatting.GOLD), true);
-            } else if (loaded_fireworks == 1) {
-                user.sendMessage(Text.translatable("itemLoadWarningLastOne.better-rockets.rechargeable_firework", loaded_fireworks).formatted(Formatting.RED, Formatting.BOLD), true);
-            }
 
             return ActionResult.SUCCESS;
 
@@ -148,7 +161,7 @@ public class RechargeableFireworkItem extends Item {
 
     @Override
     public int getItemBarColor(ItemStack stack) {
-        return ITEM_BAR_COLOR;
+        return getLoadedFireworks(stack) <= ALMOST_EMPTY ? ALMOST_EMPTY_BAR_COLOR : ITEM_BAR_COLOR;
     }
 
     @Override
@@ -172,10 +185,7 @@ public class RechargeableFireworkItem extends Item {
         world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_DISPENSER_FAIL, SoundCategory.PLAYERS, 1.0F, 1.0F);
     }
 
-    private static int packRGB(float red, float green, float blue) {
-        int r = (int) (red * 255.0F);
-        int g = (int) (green * 255.0F);
-        int b = (int) (blue * 255.0F);
-        return (r << 16) | (g << 8) | b;
+    public void playRemoveOneSound(Entity entity) {
+        entity.playSound(SoundEvents.ITEM_BUNDLE_REMOVE_ONE, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
     }
 }
