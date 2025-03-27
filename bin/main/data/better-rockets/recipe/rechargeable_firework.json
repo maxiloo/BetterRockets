@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        " I ",
+        "iSi"
+    ],
+    "key": {
+        "#": "minecraft:gunpowder",
+        "I": "minecraft:iron_block",
+        "i": "minecraft:iron_ingot",
+        "S": "minecraft:shulker_shell"
+    },
+    "result": {
+        "id": "better-rockets:rechargeable_firework",
+        "count": 1    },
+    "group": "equipment",
+    "show_notification": true
+}
