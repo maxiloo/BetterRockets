@@ -1,0 +1,8 @@
+{
+  "item.better-rockets.rechargeable_firework": "Pacote de foguetes",
+  "itemLoadWarningLastX.better-rockets.rechargeable_firework": "Apenas %d foguetes restantes",
+  "itemLoadWarningLastOne.better-rockets.rechargeable_firework": "Apenas um foguete restante",
+  "itemTooltip.better-rockets.rechargeable_firework": "%d/%d foguetes carregados",
+  "itemTooltip.better-rockets.rechargeable_firework_type": "Duração do voo: %d",
+  "itemTooltip.better-rockets.rechargeable_firework_empty": "Nenhum foguete carregado"
+}

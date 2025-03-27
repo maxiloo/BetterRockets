@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "better-rockets:item/rechargeable_firework"
+  }
+}

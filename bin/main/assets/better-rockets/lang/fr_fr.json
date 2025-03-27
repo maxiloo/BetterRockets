@@ -1,0 +1,8 @@
+{
+  "item.better-rockets.rechargeable_firework": "Sac de fusées",
+  "itemLoadWarningLastX.better-rockets.rechargeable_firework": "Il ne reste que %d fusées",
+  "itemLoadWarningLastOne.better-rockets.rechargeable_firework": "Il ne reste qu'une seule fusée",
+  "itemTooltip.better-rockets.rechargeable_firework": "%d/%d fusées chargées",
+  "itemTooltip.better-rockets.rechargeable_firework_type": "Durée de vol : %d",
+  "itemTooltip.better-rockets.rechargeable_firework_empty": "Aucune fusée chargée"
+}
