@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "better-rockets",
+	"version": "${version}",
+	"name": "Better Rockets",
+	"description": "Stores firework rockets to never run out of them in your elytra flight!",
+	"authors": [
+		"maxiloo"
+	],
+	"contact": {
+		"homepage": "https://modrinth.com/mod/better-rockets",
+		"sources": "https://github.com/maxiloo/BetterRockets"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/better-rockets/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"max.betterrockets.BetterRockets"
+		],
+		"client": [
+			"max.betterrockets.BetterRocketsClient"
+		]
+	},
+	"mixins": [
+		"better-rockets.mixins.json",
+		{
+			"config": "better-rockets.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
