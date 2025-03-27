@@ -1,0 +1,8 @@
+{
+  "item.better-rockets.rechargeable_firework": "폭죽 로켓 번들",
+  "itemLoadWarningLastX.better-rockets.rechargeable_firework": "단 %d 개의 폭죽 로켓이 남았습니다",
+  "itemLoadWarningLastOne.better-rockets.rechargeable_firework": "폭죽 로켓이 단 하나 남았습니다",
+  "itemTooltip.better-rockets.rechargeable_firework": "%d/%d 만큼의 폭죽 로켓이 장전되어 있습니다",
+  "itemTooltip.better-rockets.rechargeable_firework_type": "체공 시간: %d",
+  "itemTooltip.better-rockets.rechargeable_firework_empty": "폭죽 로켓이 장전되어있지 않습니다"
+}

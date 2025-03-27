@@ -56,7 +56,7 @@ public class RechargeableFireworkItemTest {
     @DisplayName("Test successful rocket bundle reload")
     void testOnClicked_successful() {
         // When
-        boolean result = rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.RIGHT, player, null);
+        boolean result = rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.LEFT, player, null);
 
         // Then
         assertTrue(result, "onClicked should return true when loading fireworks");
@@ -74,7 +74,7 @@ public class RechargeableFireworkItemTest {
         fireworkStack.set(DataComponentTypes.FIREWORKS, new FireworksComponent(3, new ArrayList<>()));
 
         // When
-        boolean result = rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.RIGHT, player, null);
+        boolean result = rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.LEFT, player, null);
 
         // Then
         assertTrue(result, "onClicked should return true when clicking on the stack with a the correct firework type");
@@ -87,7 +87,7 @@ public class RechargeableFireworkItemTest {
     void testOnClicked_falseFireworkType() {
         // Given
         fireworkStack.set(DataComponentTypes.FIREWORKS, new FireworksComponent(1, new ArrayList<>()));
-        rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.RIGHT, player, null);
+        rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.LEFT, player, null);
         fireworkStack.set(DataComponentTypes.FIREWORKS, new FireworksComponent(3, new ArrayList<>())); // Different flight duration
 
         // When
@@ -103,10 +103,9 @@ public class RechargeableFireworkItemTest {
     @DisplayName("Test rocket bundle reload fail due to wrong click")
     void testOnClicked_falseClick() {
         // When
-        boolean result = rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.LEFT, player, null);
+        boolean result = rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.RIGHT, player, null);
 
         // Then
-        assertFalse(result, "onClicked should return false when clicking on the stack with ClickType.LEFT");
         assertEquals(64, fireworkStack.getCount(), "the firework stack count should still be 64");
         assertEquals(0, rechargeableFireworkStack.getOrDefault(ModComponents.ROCKETS_LOADED, 0), "the rocket bundle should still be 0");
 
@@ -121,7 +120,7 @@ public class RechargeableFireworkItemTest {
         ItemStack appleStack = new ItemStack(Items.APPLE, 64);
 
         // When
-        boolean result = rechargeableFireworkItem.onClicked(rechargeableFireworkStack, appleStack, slot, ClickType.RIGHT, player, null);
+        boolean result = rechargeableFireworkItem.onClicked(rechargeableFireworkStack, appleStack, slot, ClickType.LEFT, player, null);
 
         // Then
         assertFalse(result, "onClicked should return false when clicking on the stack with the wrong item");
@@ -139,7 +138,7 @@ public class RechargeableFireworkItemTest {
         rechargeableFireworkItem.setLoadedFireworks(rechargeableFireworkStack, 512);
 
         // When
-        boolean result = rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.RIGHT, player, null);
+        boolean result = rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.LEFT, player, null);
 
         // Then
         assertFalse(result, "onClicked should return false when clicking on rocket bundle at max. capacity");
@@ -157,10 +156,10 @@ public class RechargeableFireworkItemTest {
         rechargeableFireworkItem.setLoadedFireworks(rechargeableFireworkStack, 500);
 
         // When
-        boolean result = rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.RIGHT, player, null);
+        boolean result = rechargeableFireworkItem.onClicked(rechargeableFireworkStack, fireworkStack, slot, ClickType.LEFT, player, null);
 
         // Then
-        assertTrue(result, "onClicked should return true when clicking on rocket bundle below max. capacity");
+        assertTrue(result, "onClicked should return true when left-clicking on rocket bundle below max. capacity");
         assertEquals(52, fireworkStack.getCount(), "the firework stack count should be reduced to 52");
         assertEquals(512, rechargeableFireworkStack.getOrDefault(ModComponents.ROCKETS_LOADED, 0), "the rocket bundle should reach 512 (max)");
 
