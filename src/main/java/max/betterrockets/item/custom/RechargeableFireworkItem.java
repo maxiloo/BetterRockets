@@ -1,11 +1,9 @@
 package max.betterrockets.item.custom;
 
-import max.betterrockets.BetterRockets;
 import max.betterrockets.ModComponents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.FireworksComponent;
 import net.minecraft.component.type.LoreComponent;
-import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
@@ -76,9 +74,7 @@ public class RechargeableFireworkItem extends Item {
                 updateTooltip(stack);
                 return true;
             }
-        } else if (clickType == ClickType.RIGHT) {
-            return true;
-        }
+        } else return clickType == ClickType.RIGHT;
         return false;
     }
 
@@ -110,13 +106,8 @@ public class RechargeableFireworkItem extends Item {
     }
 
     public void spawnFireworkEntity(World world, PlayerEntity user, ItemStack itemStack) {
-        // Create a new temporary ItemStack for the firework
         ItemStack fireworkStack = new ItemStack(Items.FIREWORK_ROCKET, 1);
-
-        // Set the fireworks component on this temporary stack
         fireworkStack.set(DataComponentTypes.FIREWORKS, new FireworksComponent(getFireworkType(itemStack), new ArrayList<>()));
-
-        // Spawn the entity with the temporary stack
         FireworkRocketEntity fireworkRocketEntity = new FireworkRocketEntity(world, fireworkStack, user);
         world.spawnEntity(fireworkRocketEntity);
     }
