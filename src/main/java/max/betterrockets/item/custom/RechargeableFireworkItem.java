@@ -1,8 +1,11 @@
 package max.betterrockets.item.custom;
 
+import max.betterrockets.BetterRockets;
 import max.betterrockets.ModComponents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.FireworksComponent;
+import net.minecraft.component.type.LoreComponent;
+import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
@@ -10,8 +13,6 @@ import net.minecraft.inventory.StackReference;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -19,7 +20,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.math.Fraction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +61,7 @@ public class RechargeableFireworkItem extends Item {
             if (fireworks_loaded > fireworks_loaded_old) {
                 playInsertSound(player);
             }
+            updateTooltip(stack);
             return true;
         } else if (clickType == ClickType.RIGHT && !isEmpty(stack) && otherStack.isEmpty()) {
             if (slot.canTakePartial(player)) {
@@ -72,6 +73,7 @@ public class RechargeableFireworkItem extends Item {
                 cursorStackReference.set(fireworkStack);
                 setLoadedFireworks(stack, firework_left);
                 playRemoveOneSound(player);
+                updateTooltip(stack);
                 return true;
             }
         } else if (clickType == ClickType.RIGHT) {
@@ -98,7 +100,7 @@ public class RechargeableFireworkItem extends Item {
             int loaded_fireworks = getLoadedFireworks(itemStack);
             loaded_fireworks--;
             setLoadedFireworks(itemStack, loaded_fireworks);
-
+            updateTooltip(itemStack);
             return ActionResult.SUCCESS;
 
         } else {
@@ -108,8 +110,14 @@ public class RechargeableFireworkItem extends Item {
     }
 
     public void spawnFireworkEntity(World world, PlayerEntity user, ItemStack itemStack) {
-        FireworkRocketEntity fireworkRocketEntity = new FireworkRocketEntity(world, itemStack, user);
-        itemStack.set(DataComponentTypes.FIREWORKS, new FireworksComponent(getFireworkType(itemStack), new ArrayList<>()));
+        // Create a new temporary ItemStack for the firework
+        ItemStack fireworkStack = new ItemStack(Items.FIREWORK_ROCKET, 1);
+
+        // Set the fireworks component on this temporary stack
+        fireworkStack.set(DataComponentTypes.FIREWORKS, new FireworksComponent(getFireworkType(itemStack), new ArrayList<>()));
+
+        // Spawn the entity with the temporary stack
+        FireworkRocketEntity fireworkRocketEntity = new FireworkRocketEntity(world, fireworkStack, user);
         world.spawnEntity(fireworkRocketEntity);
     }
 
@@ -164,17 +172,17 @@ public class RechargeableFireworkItem extends Item {
         return getLoadedFireworks(stack) <= ALMOST_EMPTY ? ALMOST_EMPTY_BAR_COLOR : ITEM_BAR_COLOR;
     }
 
-    @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-
+    public void updateTooltip(ItemStack stack) {
+        List<Text> tooltip = new ArrayList<>();
         int loadedFireworks = stack.getOrDefault(ModComponents.ROCKETS_LOADED, -1);
-
         if (loadedFireworks > 0) {
             tooltip.add(Text.translatable("itemTooltip.better-rockets.rechargeable_firework_type", getFireworkType(stack)).formatted(Formatting.BLUE));
             tooltip.add(Text.translatable("itemTooltip.better-rockets.rechargeable_firework", getLoadedFireworks(stack), MAX_LOAD).formatted(Formatting.GOLD));
-        } else if (loadedFireworks == 0){
+        } else if (loadedFireworks == 0) {
             tooltip.add(Text.translatable("itemTooltip.better-rockets.rechargeable_firework_empty").formatted(Formatting.GOLD));
         }
+
+        stack.set(DataComponentTypes.LORE, new LoreComponent(tooltip));
     }
 
     public void playInsertSound(Entity entity) {
