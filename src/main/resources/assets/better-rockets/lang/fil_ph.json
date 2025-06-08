@@ -1,0 +1,8 @@
+{
+  "item.better-rockets.rechargeable_firework": "Bunton ng Raket",
+  "itemLoadWarningLastX.better-rockets.rechargeable_firework": "Natitira na lamang ang %d firework na raket",
+  "itemLoadWarningLastOne.better-rockets.rechargeable_firework": "Isa na lamang ang natitirang firework na raket",
+  "itemTooltip.better-rockets.rechargeable_firework": "Naikargang firework na raket: %d/%d",
+  "itemTooltip.better-rockets.rechargeable_firework_type": "Tagal ng lipad: %d",
+  "itemTooltip.better-rockets.rechargeable_firework_empty": "Walang nakargang firework na raket"
+}

@@ -1,0 +1,8 @@
+{
+  "item.better-rockets.rechargeable_firework": "火箭束",
+  "itemLoadWarningLastX.better-rockets.rechargeable_firework": "仅剩 %d 个烟花火箭",
+  "itemLoadWarningLastOne.better-rockets.rechargeable_firework": "仅剩一个烟花火箭",
+  "itemTooltip.better-rockets.rechargeable_firework": "已装填烟花火箭：%d/%d",
+  "itemTooltip.better-rockets.rechargeable_firework_type": "飞行时间：%d",
+  "itemTooltip.better-rockets.rechargeable_firework_empty": "未装填任何烟花火箭"
+}

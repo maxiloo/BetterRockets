@@ -1,0 +1,8 @@
+{
+  "item.better-rockets.rechargeable_firework": "חבילת רקטות",
+  "itemLoadWarningLastX.better-rockets.rechargeable_firework": "נותרו רק %d רקטות זיקוקים",
+  "itemLoadWarningLastOne.better-rockets.rechargeable_firework": "נותרה רק רקטת זיקוק אחת",
+  "itemTooltip.better-rockets.rechargeable_firework": "%d/%d רקטות זיקוקים טעונות",
+  "itemTooltip.better-rockets.rechargeable_firework_type": "משך טיסה: %d",
+  "itemTooltip.better-rockets.rechargeable_firework_empty": "אין רקטות זיקוקים טעונות"
+}

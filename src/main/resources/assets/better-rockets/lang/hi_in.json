@@ -1,0 +1,8 @@
+{
+  "item.better-rockets.rechargeable_firework": "रॉकेट बंडल",
+  "itemLoadWarningLastX.better-rockets.rechargeable_firework": "केवल %d फायरवर्क रॉकेट बचे हैं",
+  "itemLoadWarningLastOne.better-rockets.rechargeable_firework": "केवल एक फायरवर्क रॉकेट बचा है",
+  "itemTooltip.better-rockets.rechargeable_firework": "लोडेड फायरवर्क रॉकेट: %d/%d",
+  "itemTooltip.better-rockets.rechargeable_firework_type": "उड़ान अवधि: %d",
+  "itemTooltip.better-rockets.rechargeable_firework_empty": "कोई फायरवर्क रॉकेट लोड नहीं है"
+}

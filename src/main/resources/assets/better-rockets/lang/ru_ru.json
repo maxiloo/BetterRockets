@@ -1,0 +1,8 @@
+{
+  "item.better-rockets.rechargeable_firework": "Пакет ракет",
+  "itemLoadWarningLastX.better-rockets.rechargeable_firework": "Осталось только %d фейерверков",
+  "itemLoadWarningLastOne.better-rockets.rechargeable_firework": "Остался только один фейерверк",
+  "itemTooltip.better-rockets.rechargeable_firework": "Заряжено фейерверков: %d/%d",
+  "itemTooltip.better-rockets.rechargeable_firework_type": "Длительность полёта: %d",
+  "itemTooltip.better-rockets.rechargeable_firework_empty": "Фейерверки не загружены"
+}
