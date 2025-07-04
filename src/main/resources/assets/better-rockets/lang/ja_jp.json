@@ -1,0 +1,8 @@
+{
+  "item.better-rockets.rechargeable_firework": "ロケットバンドル",
+  "itemLoadWarningLastX.better-rockets.rechargeable_firework": "残り%d個の花火ロケット",
+  "itemLoadWarningLastOne.better-rockets.rechargeable_firework": "残り1個の花火ロケット",
+  "itemTooltip.better-rockets.rechargeable_firework": "花火ロケット: %d/%d 発装填済み",
+  "itemTooltip.better-rockets.rechargeable_firework_type": "飛行時間: %d",
+  "itemTooltip.better-rockets.rechargeable_firework_empty": "花火ロケットが装填されていません"
+}
