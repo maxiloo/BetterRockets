@@ -83,7 +83,7 @@ public class RechargeableFireworkItem extends Item {
 
         ItemStack itemStack = user.getStackInHand(hand);
 
-        if (!world.isClient && user.isGliding()) {
+        if (!world.isClient() && user.isGliding()) {
             if (isEmpty(itemStack)) {
                 playEmptySound(world, user);
                 return ActionResult.FAIL;
@@ -177,7 +177,7 @@ public class RechargeableFireworkItem extends Item {
     }
 
     public void playInsertSound(Entity entity) {
-        entity.playSound(SoundEvents.ITEM_BUNDLE_INSERT, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
+        entity.playSound(SoundEvents.ITEM_BUNDLE_INSERT, 0.8F, 0.8F + entity.getEntityWorld().getRandom().nextFloat() * 0.4F);
     }
 
     public void playEmptySound(World world, PlayerEntity user) {
@@ -185,6 +185,6 @@ public class RechargeableFireworkItem extends Item {
     }
 
     public void playRemoveOneSound(Entity entity) {
-        entity.playSound(SoundEvents.ITEM_BUNDLE_REMOVE_ONE, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
+        entity.playSound(SoundEvents.ITEM_BUNDLE_REMOVE_ONE, 0.8F, 0.8F + entity.getEntityWorld().getRandom().nextFloat() * 0.4F);
     }
 }
