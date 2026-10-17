@@ -1,6 +1,7 @@
 package max.betterrockets;
 
 import com.mojang.serialization.Codec;
+import max.betterrockets.component.LoadedRocketsComponent;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -8,10 +9,10 @@ import net.minecraft.resources.Identifier;
 
 public class ModComponents {
 
-    public static final DataComponentType<Integer> ROCKETS_LOADED = Registry.register(
+    public static final DataComponentType<LoadedRocketsComponent> ROCKETS_LOADED = Registry.register(
             BuiltInRegistries.DATA_COMPONENT_TYPE,
             Identifier.fromNamespaceAndPath(BetterRockets.MOD_ID, "rockets_loaded"),
-            DataComponentType.<Integer>builder().persistent(Codec.INT).build()
+            DataComponentType.<LoadedRocketsComponent>builder().persistent(LoadedRocketsComponent.CODEC).build()
     );
 
     public static final DataComponentType<Integer> ROCKET_TYPE = Registry.register(

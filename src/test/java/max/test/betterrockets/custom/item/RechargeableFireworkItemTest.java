@@ -84,7 +84,7 @@ public class RechargeableFireworkItemTest {
         // Then
         assertTrue(result, "overrideOtherStackedOnMe should return true when loading fireworks");
         assertEquals(0, fireworkStack.getCount(), "the firework stack count should be zero");
-        assertEquals(64, rechargeableFireworkStack.getOrDefault(ModComponents.ROCKETS_LOADED, 0), "the rocket bundle should be set to 64");
+        assertEquals(64, rechargeableFireworkItem.getLoadedFireworks(rechargeableFireworkStack), "the rocket bundle should be set to 64");
 
         // Verify
         verify(rechargeableFireworkItem).playInsertSound(any(Player.class));
@@ -102,7 +102,7 @@ public class RechargeableFireworkItemTest {
         // Then
         assertTrue(result, "overrideOtherStackedOnMe should return true when clicking on the stack with a the correct firework type");
         assertEquals(3, rechargeableFireworkItem.getFireworkType(rechargeableFireworkStack), "the firework type should be 3");
-        assertEquals(64, rechargeableFireworkStack.getOrDefault(ModComponents.ROCKETS_LOADED, 0), "the rocket bundle should increase to 64");
+        assertEquals(64, rechargeableFireworkItem.getLoadedFireworks(rechargeableFireworkStack), "the rocket bundle should increase to 64");
     }
 
     @Test
@@ -119,7 +119,7 @@ public class RechargeableFireworkItemTest {
         // Then
         assertFalse(result, "overrideOtherStackedOnMe should return false when clicking on the stack with a different rocket duration");
         assertEquals(1, rechargeableFireworkItem.getFireworkType(rechargeableFireworkStack), "the firework type should still be 1");
-        assertEquals(64, rechargeableFireworkStack.getOrDefault(ModComponents.ROCKETS_LOADED, 0), "the rocket bundle should still be 64");
+        assertEquals(64, rechargeableFireworkItem.getLoadedFireworks(rechargeableFireworkStack), "the rocket bundle should still be 64");
     }
 
     @Test
@@ -130,7 +130,7 @@ public class RechargeableFireworkItemTest {
 
         // Then
         assertEquals(64, fireworkStack.getCount(), "the firework stack count should still be 64");
-        assertEquals(0, rechargeableFireworkStack.getOrDefault(ModComponents.ROCKETS_LOADED, 0), "the rocket bundle should still be 0");
+        assertEquals(0, rechargeableFireworkItem.getLoadedFireworks(rechargeableFireworkStack), "the rocket bundle should still be 0");
 
         // Verify
         verify(rechargeableFireworkItem, never()).playInsertSound(any(Player.class));
@@ -148,7 +148,7 @@ public class RechargeableFireworkItemTest {
         // Then
         assertFalse(result, "overrideOtherStackedOnMe should return false when clicking on the stack with the wrong item");
         assertEquals(64, appleStack.getCount(), "the apple stack count should still be 64");
-        assertEquals(0, rechargeableFireworkStack.getOrDefault(ModComponents.ROCKETS_LOADED, 0), "the rocket bundle should still be 0");
+        assertEquals(0, rechargeableFireworkItem.getLoadedFireworks(rechargeableFireworkStack), "the rocket bundle should still be 0");
 
         // Verify
         verify(rechargeableFireworkItem, never()).playInsertSound(any(Player.class));
@@ -166,7 +166,7 @@ public class RechargeableFireworkItemTest {
         // Then
         assertFalse(result, "overrideOtherStackedOnMe should return false when clicking on rocket bundle at max. capacity");
         assertEquals(64, fireworkStack.getCount(), "the firework stack count should still be 64");
-        assertEquals(512, rechargeableFireworkStack.getOrDefault(ModComponents.ROCKETS_LOADED, 0), "the rocket bundle should still be 512 (max)");
+        assertEquals(512, rechargeableFireworkItem.getLoadedFireworks(rechargeableFireworkStack), "the rocket bundle should still be 512 (max)");
 
         // Verify
         verify(rechargeableFireworkItem, never()).playInsertSound(any(Player.class));
@@ -184,7 +184,7 @@ public class RechargeableFireworkItemTest {
         // Then
         assertTrue(result, "overrideOtherStackedOnMe should return true when left-clicking on rocket bundle below max. capacity");
         assertEquals(52, fireworkStack.getCount(), "the firework stack count should be reduced to 52");
-        assertEquals(512, rechargeableFireworkStack.getOrDefault(ModComponents.ROCKETS_LOADED, 0), "the rocket bundle should reach 512 (max)");
+        assertEquals(512, rechargeableFireworkItem.getLoadedFireworks(rechargeableFireworkStack), "the rocket bundle should reach 512 (max)");
 
         // Verify
         verify(rechargeableFireworkItem).playInsertSound(any(Player.class));
