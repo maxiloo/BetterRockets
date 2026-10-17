@@ -50,7 +50,7 @@ public class RechargeableFireworkItemTest {
         ModItems.RECHARGEABLE_FIREWORK.toString();
 
         BuiltInRegistries.DATA_COMPONENT_INITIALIZERS
-                .build(VanillaRegistries.createLookup())
+                .build(VanillaRegistries.createWorldLookup())
                 .forEach(DataComponentInitializers.PendingComponents::apply);
         componentsBound = true;
     }
