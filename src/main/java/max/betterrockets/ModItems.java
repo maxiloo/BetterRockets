@@ -1,8 +1,8 @@
 package max.betterrockets;
 
 import max.betterrockets.item.custom.RechargeableFireworkItem;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTabOutput;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -15,7 +15,7 @@ public class ModItems {
 
     public static final Item RECHARGEABLE_FIREWORK = registerItem("rechargeable_firework");
 
-    private static void addItemsToToolItemGroup(FabricItemGroupEntries entries) {
+    private static void addItemsToToolItemGroup(FabricCreativeModeTabOutput entries) {
         entries.accept(RECHARGEABLE_FIREWORK);
     }
 
@@ -36,6 +36,7 @@ public class ModItems {
     public static void registerModItems() {
         BetterRockets.LOGGER.info("Registering ModItems for " + BetterRockets.MOD_ID);
 
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(ModItems::addItemsToToolItemGroup);
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
+                .register(ModItems::addItemsToToolItemGroup);
     }
 }

@@ -4,6 +4,9 @@ import max.betterrockets.ModComponents;
 import max.betterrockets.ModItems;
 import max.betterrockets.item.custom.RechargeableFireworkItem;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.component.DataComponentInitializers;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.InteractionHand;
@@ -33,10 +36,30 @@ public class RechargeableFireworkItemTest {
     private Slot slot;
     private Level world;
 
+    private static boolean componentsBound = false;
+
+    /**
+     * Since Minecraft 26.1, item components are only bound when a world/datapacks load.
+     * In unit tests there is no world, so we bind them manually (once) – otherwise
+     * {@code new ItemStack(...)} throws "Components not bound yet".
+     */
+    private static void bindItemComponents() {
+        if (componentsBound) return;
+        // Make sure our own items/components are registered BEFORE binding
+        ModComponents.ROCKETS_LOADED.toString();
+        ModItems.RECHARGEABLE_FIREWORK.toString();
+
+        BuiltInRegistries.DATA_COMPONENT_INITIALIZERS
+                .build(VanillaRegistries.createLookup())
+                .forEach(DataComponentInitializers.PendingComponents::apply);
+        componentsBound = true;
+    }
+
     @BeforeEach
     void setUp() {
         SharedConstants.tryDetectVersion();
         Bootstrap.bootStrap();
+        bindItemComponents();
 
         rechargeableFireworkItem = (RechargeableFireworkItem) spy(ModItems.RECHARGEABLE_FIREWORK);
         fireworkStack = new ItemStack(Items.FIREWORK_ROCKET, 64);
@@ -212,10 +235,10 @@ public class RechargeableFireworkItemTest {
 
         // When
         rechargeableFireworkItem.setLoadedFireworks(rechargeableFireworkStack, 11);
-        InteractionResult actionResult = rechargeableFireworkStack.use(world, player, InteractionHand.MAIN_HAND);
+        InteractionResult actionResult = rechargeableFireworkItem.use(world, player, InteractionHand.MAIN_HAND);
 
         // Then
-        assertEquals("Success[swingSource=CLIENT, itemContext=ItemContext[wasItemInteraction=true, heldItemTransformedTo=1 [unregistered]]]", actionResult.toString(), "successful use of rocket bundle should return successful ActionResult");
+        assertEquals(InteractionResult.SUCCESS, actionResult, "successful use of rocket bundle should return successful ActionResult");
         assertEquals(10, rechargeableFireworkItem.getLoadedFireworks(rechargeableFireworkStack), "consumption should reduce number of loaded fireworks");
 
         // Verify
@@ -232,7 +255,7 @@ public class RechargeableFireworkItemTest {
 
         // When
         rechargeableFireworkItem.setLoadedFireworks(rechargeableFireworkStack, 0);
-        InteractionResult  actionResult = rechargeableFireworkStack.use(world, player, InteractionHand.MAIN_HAND);
+        InteractionResult  actionResult = rechargeableFireworkItem.use(world, player, InteractionHand.MAIN_HAND);
 
         // Then
         assertEquals(InteractionResult.FAIL, actionResult, "unsuccessful use of rocket bundle should return fail ActionResult");
@@ -252,7 +275,7 @@ public class RechargeableFireworkItemTest {
 
         // When
         rechargeableFireworkItem.setLoadedFireworks(rechargeableFireworkStack, 20);
-        InteractionResult actionResult = rechargeableFireworkStack.use(world, player, InteractionHand.MAIN_HAND);
+        InteractionResult actionResult = rechargeableFireworkItem.use(world, player, InteractionHand.MAIN_HAND);
 
         // Then
         assertEquals(InteractionResult.FAIL, actionResult, "unsuccessful use of rocket bundle should return fail ActionResult");
